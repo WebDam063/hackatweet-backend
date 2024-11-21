@@ -7,20 +7,25 @@ const { checkBody } = require('../modules/checkBody');
 
 router.post('/newtweet', (req, res) => {
   if (!checkBody(req.body, ['message'])) {
-    res.json({ result: false, error: 'Please type at least 1 character.'});
+    res.json({ result: false, error: 'Please type at least 1 character.' });
     return;
   }
 
-      const newTweet = new Tweet({
-        username: "JohnDoe",
-        text: req.body.message,
-        likes: 22,
-        hashtags: ['#HackaTweet', '#TropCool']
-      });
+  const { username, message, hashtags } = req.body
 
-      newTweet.save().then(newDoc => {
-        res.json({ result: true, tweet: newDoc });
-      });
+  console.log({ username, message, hashtags });
+
+
+  const newTweet = new Tweet({
+    username,
+    text: message,
+    likes: 0,
+    hashtags
+  });
+
+  newTweet.save().then(newDoc => {
+    res.json({ result: true, tweet: newDoc });
+  });
 });
 
 router.post('/gettweets', (req, res) => {
