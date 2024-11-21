@@ -11,13 +11,14 @@ router.post('/newtweet', (req, res) => {
     return;
   }
 
-  const { username, message, hashtags } = req.body
+  const { username, message, hashtags, firstname } = req.body
 
   console.log({ username, message, hashtags });
 
 
   const newTweet = new Tweet({
     username,
+    firstname,
     text: message,
     likes: 0,
     hashtags
