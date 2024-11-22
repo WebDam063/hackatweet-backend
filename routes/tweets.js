@@ -30,14 +30,7 @@ router.post('/newtweet', (req, res) => {
 });
 
 router.post('/gettweets', (req, res) => {
-//console.log(req.body)
-  if(!checkBody(req.body, ['user'])){
-    res.json({result: false, error: 'Login or register'})
-    return;
-  }
-  const user = req.body.user;
-
-    Tweet.find({username: user.username}).then((data) => {
+    Tweet.find().then((data) => {
       res.json({data})
     })
 })
