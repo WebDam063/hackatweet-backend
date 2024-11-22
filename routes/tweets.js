@@ -30,7 +30,7 @@ router.post('/newtweet', (req, res) => {
 });
 
 router.post('/gettweets', (req, res) => {
-console.log(req.body)
+//console.log(req.body)
   if(!checkBody(req.body, ['user'])){
     res.json({result: false, error: 'Login or register'})
     return;
@@ -59,5 +59,18 @@ router.post('/trend', async (req, res) => {
   res.json({ result: true, hashtags })
 })
 
+router.post('/like', (req, res) => {
+  if(!checkBody(req.body, ['tweetId'])) {
+    res.json({result: false, error: 'No tweet to like'})
+    return;
+  }
 
+  const {tweetId} = req.body;
+  
+    Tweet.updateOne({_id: tweetId}, { $inc: {likes: 1} })
+    .then(response => {
+      res.json({ response })
+    })
+
+})
 module.exports = router;
