@@ -96,4 +96,19 @@ router.post('/deletetweets', async (req, res) => {
   });
 })
 
+router.post('/getHashtags', (req, res) => {
+  // Vérifiez si le corps de la requête contient la propriété 'hashtag'
+  if (!checkBody(req.body, ['hashtag'])) {
+    return res.json({ result: false, error: 'No Hashtag provided' });
+  }
+
+  const { hashtag } = req.body;
+
+  // Recherchez les tweets contenant le hashtag spécifié
+  Tweet.find({ hashtags: { $in: [hashtag] } })
+    .then(tweets => {
+      res.json({ result: true, tweets });
+    })
+});
+
 module.exports = router;
