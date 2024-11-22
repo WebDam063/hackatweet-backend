@@ -69,8 +69,30 @@ router.post('/like', (req, res) => {
   
     Tweet.updateOne({_id: tweetId}, { $inc: {likes: 1} })
     .then(response => {
-      res.json({ response })
+      Tweet.findById(tweetId).then(tweet => {
+        res.json({  likes:tweet.likes })
+      })
+
     })
 
 })
+
+router.post('/unlike', (req, res) => {
+  if(!checkBody(req.body, ['tweetId'])) {
+    res.json({result: false, error: 'No tweet to dislike'})
+    return;
+  }
+
+  const {tweetId} = req.body;
+  
+    Tweet.updateOne({_id: tweetId}, { $inc: {likes: -1} })
+    .then(response => {
+      Tweet.findById(tweetId).then(tweet => {
+        res.json({  likes:tweet.likes })
+      })
+
+    })
+
+})
+
 module.exports = router;
