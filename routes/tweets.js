@@ -35,16 +35,8 @@ router.post('/gettweets', (req, res) => {
     })
 })
 
-router.post('/trend', async (req, res) => {
-  if (!checkBody(req.body, ['username'])) {
-    res.json({ result: false, error: 'Login or register' })
-    return;
-  }
-  const { username } = req.body;
-  console.log(username);
-
+router.get('/trend', async (req, res) => {
   const hashtags = await Tweet.aggregate([
-    { $match: { username: username } },
     { $unwind: "$hashtags" },
     { $group: { _id: "$hashtags", count: { $sum: 1 } } },
   ])
