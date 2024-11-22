@@ -42,4 +42,22 @@ console.log(req.body)
     })
 })
 
+router.post('/trend', async (req, res) => {
+  if (!checkBody(req.body, ['username'])) {
+    res.json({ result: false, error: 'Login or register' })
+    return;
+  }
+  const { username } = req.body;
+  console.log(username);
+
+  const hashtags = await Tweet.aggregate([
+    { $match: { username: username } },
+    { $unwind: "$hashtags" },
+    { $group: { _id: "$hashtags", count: { $sum: 1 } } },
+  ])
+
+  res.json({ result: true, hashtags })
+})
+
+
 module.exports = router;
