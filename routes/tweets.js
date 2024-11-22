@@ -88,4 +88,20 @@ router.post('/unlike', (req, res) => {
 
 })
 
+router.post('/deletetweets', async (req, res) => {
+  if(!checkBody(req.body, ['tweetId'])){
+    res.json({result: false, error: 'No tweet to delete'})
+    return;
+  }
+
+  const {tweetId} = req.body
+  const tweet = await Tweet.findOne({_id: tweetId});
+  console.log('Tweet: ', tweet)
+
+  Tweet.deleteOne({_id: tweetId}).then((response) => {
+    console.log(response)
+      res.json({tweet})
+  });
+})
+
 module.exports = router;
